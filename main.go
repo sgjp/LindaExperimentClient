@@ -27,11 +27,13 @@ func main() {
 
 func start(){
 	if mode ==1{
+		log.Printf("Starting as manager, generating W tuples...")
 		//Generate requests for primer numbers
 		for i:=1;i<=primeNumsQty;i++{
 			log.Printf("Writing tuple: %v","W,"+strconv.Itoa(i))
 			client.OutTuple("W,"+strconv.Itoa(i))
 		}
+		log.Printf("Searching for results...")
 		i := 1
 
 		//Check for the same ammount of results
@@ -56,7 +58,7 @@ func start(){
 		//Get requests, process them and return the result
 		var tuplesToSend []string
 		i := 1
-
+		log.Printf("Starting as worker, looking for W tuples...")
 		for  {
 			tuple := client.InTuple("W")
 			if tuple != "0"{
@@ -78,7 +80,7 @@ func start(){
 			//log.Printf("Writing tuple: %v", tuplesToSend[b])
 			client.OutTuple(tuplesToSend[b])
 		}
-
+		log.Printf("Finished working !")
 
 	}
 }
