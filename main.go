@@ -12,7 +12,7 @@ import (
 
 var mode int
 var primeNumsQty int
-var taskDurationFile = "sgjp/LindaExperimentClient/TaskDuration.csv"
+var taskDurationFile = "TaskDuration.csv"
 
 func main() {
 	//mode sets the device to Worker: 0 or Manager: 1
@@ -29,6 +29,7 @@ func start(){
 	if mode ==1{
 		log.Printf("Starting as manager, generating W tuples...")
 		//Generate requests for primer numbers
+		t := time.Now()
 		for i:=1;i<=primeNumsQty;i++{
 			log.Printf("Writing tuple: %v","W,"+strconv.Itoa(i))
 			client.OutTuple("W,"+strconv.Itoa(i))
@@ -37,7 +38,7 @@ func start(){
 		i := 1
 
 		//Check for the same ammount of results
-		t := time.Now()
+
 		for true{
 			tuple := client.InTuple("R")
 			if tuple != "0"{
@@ -62,6 +63,7 @@ func start(){
 		for  {
 			tuple := client.InTuple("W")
 			if tuple != "0"{
+				log.Printf("Found!: %v",tuple)
 				i++
 				splittedTuple := strings.Split(tuple,",")
 				qty, err := strconv.Atoi(splittedTuple[1])
